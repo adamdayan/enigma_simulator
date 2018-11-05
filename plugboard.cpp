@@ -42,6 +42,8 @@ int Plugboard::setUp(char path[100])
   int iterator_cnt = 0, current_read, last_read, ret; 
   ifstream in_stream;
 
+  wiring_path = path; 
+
   ret = numericCheck(path);
   if (ret)
     return ret;
