@@ -2,46 +2,12 @@
 #include <cstring>
 #include <vector>
 #include <map>
+#include <fstream>
 #include "enigma.h"
 
 using namespace std; 
 
-/* ---------------- PLUGBOARD METHODS -------------- */
-int Plugboard::setUp(char* passed_wiring_path, std::vector<int> plugboard_wiring_settings)
-{
-  int iterator_cnt = 0; 
-  //std::map<int, int> wiring_map;
-
-  wiring_path = passed_wiring_path; 
-
-  if (plugboard_wiring_settings.size() % 2 != 0)
-    {
-      cerr << "There is an odd number of plugboard numbers in " << wiring_path;
-      return 6;
-    }
-    
-  for (std::vector<int>::const_iterator i = plugboard_wiring_settings.begin(); i != plugboard_wiring_settings.end(); ++i)
-    {
-      if (iterator_cnt % 2 == 0)
-	{
-	  if (*i == *(i+1))
-	    {
-	      cerr << "Attempted to map number to itself in " << wiring_path << endl;
-	      return 5;
-	    }
-	  wiring_map.insert(pair <int, int> (*i, *(i+1)));
-	}
-      if (iterator_cnt % 2 != 0)
-	{
-	  wiring_map.insert(pair <int, int> (*i, *(i-1)));
-	}
-      iterator_cnt++; 
-    }
- 
-  return 0; 
-}
-
-int Plugboard::numericCheck(char path[100])
+int Plugboard::numericCheck(char* path)
 {
   ifstream in_stream;
   char ch;
@@ -76,7 +42,7 @@ int Plugboard::setUp(char path[100])
   int iterator_cnt = 0, current_read, last_read, ret; 
   ifstream in_stream;
 
-  ret = numeric_check(path);
+  ret = numericCheck(path);
   if (ret)
     return ret;
     
@@ -120,13 +86,16 @@ int Plugboard::setUp(char path[100])
 
 	  wiring_map.insert(pair <int, int> (last_read, current_read));
 	  wiring_map.insert(pair <int, int> (current_read, last_read));
-
-	  in_stream >> current_read;
-	  iterator++;
 	}
+      
+      in_stream >> current_read;
+      iterator_cnt++;
     }
+
+  in_stream.close(); 
+  
   /* check that number of plugboard parameters is even */ 
-  if ((iterator_cnt+1) % 2 != 0)
+  if ((iterator_cnt) % 2 != 0)
     {
       cerr << "Odd number of parameters found in " << path << endl;
       return 6;

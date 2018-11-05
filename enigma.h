@@ -18,10 +18,7 @@ class EnigmaMachine
   std::vector<char*> rotor_wiring_paths;
 
   /* raw settings */ 
-  std::vector<int> plugboard_wiring_settings;
-  std::vector<int> reflector_wiring_settings;
-  std::vector<int> rotor_position_settings; 
-  std::vector<std::vector<int>> rotor_wiring_settings; 
+  
 
   int return_code; 
   
@@ -30,9 +27,6 @@ class EnigmaMachine
   
   /* methods */ 
   EnigmaMachine(int argument_cnt, char** argument_array);
-  int numericCheck(char path[100]);
-  int readSettings(char path[100], std::vector<int>& target_vector);
-  int populateSettings();
   int setUp(); 
   
 
