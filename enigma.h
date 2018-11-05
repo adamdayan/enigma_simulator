@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <string>
+#include <map>
+#include "plugboard.h"
 
 class EnigmaMachine
 {
@@ -21,9 +23,17 @@ class EnigmaMachine
   std::vector<int> rotor_position_settings; 
   std::vector<std::vector<int>> rotor_wiring_settings; 
 
+  int return_code; 
+  
+  /* internal objects */
+  Plugboard plugboard; 
+  
+  /* methods */ 
   EnigmaMachine(int argument_cnt, char** argument_array);
-  std::vector<int> readSettings(char path[100]);
-  void populateSettings();
+  int numericCheck(char path[100]);
+  int readSettings(char path[100], std::vector<int>& target_vector);
+  int populateSettings();
+  int setUp(); 
   
 
 };

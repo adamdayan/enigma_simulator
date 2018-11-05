@@ -2,11 +2,17 @@
 #include <cstring>
 #include <vector>
 #include <fstream>
-#include"enigma.h"
+#include <map>
+#include "enigma.h"
+#include "plugboard.h"
 
 using namespace std;
 
-/* constructor for the EnigmaMachine class */ 
+
+
+/*---------------- ENIGMA MACHINE METHODS -----------------*/
+/* constructor for the EnigmaMachine class
+TODO: need to work out how to return error code from constructor  */ 
 EnigmaMachine::EnigmaMachine(int argument_cnt, char** argument_array)
 {
   int plugboard_check = 0, reflector_check = 0, rotor_position_check = 0; 
@@ -41,18 +47,51 @@ EnigmaMachine::EnigmaMachine(int argument_cnt, char** argument_array)
     }
 }
 
-std::vector<int> EnigmaMachine::readSettings(char path[100])
+int EnigmaMachine::numericCheck(char path[100])
 {
   ifstream in_stream;
-  std::vector<int> target_vector;
-  int current_read; 
+  char ch;
+
+  in_stream.open(path);
+
+  in_stream.get(ch);
+
+  if (!in_stream.is_open())
+    {
+      cerr << "Stream from " << path << " has failed to open\n";
+      return 11;
+    }
+
+  while (!in_stream.eof())
+    {
+      if (!((ch > 47 && ch <= 57) || (ch == 32) ||(ch == 10)))
+	{
+	  cerr << "Non-numeric character " << ch <<" detected in " << path << " at position " << in_stream.tellg() << endl;
+	  return 4;
+	}
+      in_stream.get(ch); 
+    }
+
+  in_stream.close(); 
+
+  return 0;
+}
+
+int EnigmaMachine::readSettings(char path[100], std::vector<int>& target_vector)
+{
+  ifstream in_stream;
+  int current_read, ret;
+
+  ret = numericCheck(path);
+  if (ret)
+    return ret; 
 
   in_stream.open(path);    
 
   if (!in_stream.is_open())
     {
-      cerr << "The stream has failed to open\n";
-      exit(11);
+      cerr << "Stream from " << path << " has failed to open\n" << endl;
+      return 11;
     }	      
 
   in_stream >> current_read;
@@ -61,27 +100,58 @@ std::vector<int> EnigmaMachine::readSettings(char path[100])
     {
       if (in_stream.fail())
 	{
-	  cerr << "The stream failed either while opening or reading\n";
-	  exit(11);
+	  cerr << "Stream from " << path << " has failed at " << in_stream.tellg() << endl;
+	  return 11;
+	}
+      if (current_read < 0 || current_read > 25)
+	{
+	  cerr << "'" << current_read << "' is not between 0 and 25. Found at "
+	       << in_stream.tellg() << " in " << path << endl; 
 	}
       target_vector.push_back(current_read);
       in_stream >> current_read;
     }
 
-  return target_vector; 
+  in_stream.close(); 
+
+  return 0;
 }
 
-void EnigmaMachine::populateSettings()
+int EnigmaMachine::populateSettings()
 {
-  plugboard_wiring_settings = readSettings(plugboard_wiring_path);
-  reflector_wiring_settings = readSettings(reflector_wiring_path);
-  rotor_position_settings = readSettings(rotor_position_path); 
+  int ret = 0;
+  ret = readSettings(plugboard_wiring_path, plugboard_wiring_settings);
+  if (ret)
+    return ret; 
+  ret = readSettings(reflector_wiring_path, reflector_wiring_settings);
+  if (ret)
+    return ret; 
+  ret = readSettings(rotor_position_path, rotor_position_settings);
+  if (ret)
+    return ret; 
 
   for (std::vector<char*>::const_iterator i = rotor_wiring_paths.begin(); i != rotor_wiring_paths.end(); ++i)
     {
-      rotor_wiring_settings.push_back(readSettings(*i));
+      std::vector<int> current_rotor_wiring_settings; 
+      ret = readSettings(*i, current_rotor_wiring_settings); 
+      if (ret)
+	return ret; 
+      rotor_wiring_settings.push_back(current_rotor_wiring_settings);
     }
+
+  return ret; 
 }
+
+int EnigmaMachine::setUp()
+{
+  int ret = plugboard.setUp(plugboard_wiring_path, plugboard_wiring_settings); 
+  if (ret)
+    return ret;
+  else
+    return 0; 
+}
+
+int EnigmaMachine::readInput(
 
 
 
