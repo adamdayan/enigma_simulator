@@ -47,36 +47,6 @@ EnigmaMachine::EnigmaMachine(int argument_cnt, char** argument_array)
     }
 }
 
-int EnigmaMachine::numericCheck(char path[100])
-{
-  ifstream in_stream;
-  char ch;
-
-  in_stream.open(path);
-
-  in_stream.get(ch);
-
-  if (!in_stream.is_open())
-    {
-      cerr << "Stream from " << path << " has failed to open\n";
-      return 11;
-    }
-
-  while (!in_stream.eof())
-    {
-      if (!((ch > 47 && ch <= 57) || (ch == 32) ||(ch == 10)))
-	{
-	  cerr << "Non-numeric character " << ch <<" detected in " << path << " at position " << in_stream.tellg() << endl;
-	  return 4;
-	}
-      in_stream.get(ch); 
-    }
-
-  in_stream.close(); 
-
-  return 0;
-}
-
 int EnigmaMachine::readSettings(char path[100], std::vector<int>& target_vector)
 {
   ifstream in_stream;
@@ -151,7 +121,8 @@ int EnigmaMachine::setUp()
     return 0; 
 }
 
-int EnigmaMachine::readInput(
+
+  
 
 
 
