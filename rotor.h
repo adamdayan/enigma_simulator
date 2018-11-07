@@ -2,23 +2,36 @@
 #define ROTOR_H
 
 #include <map>
+#include <vector>
 
 class Rotor
 {
  public:
   /* paths */
-  char wiring_path[100];
-  char position_path[100];
+  char* wiring_path;
+  char* position_path;
 
   /* maps */ 
   std::map<int, int> wiring_map;
   std::map<int, int> reverse_wiring_map;
 
   /* position */
-  int position; 
+  int position;
+  int rotor_index; 
+  std::vector<int> notches;
+  Rotor* next_rotor = NULL;
+  Rotor* prev_rotor = NULL; 
 
   /* methods */
-  int numericCheck(char passed_wiring_path[100]); 
-  int setUpMapping(char passed_wiring_path[100]);
-  int setUpPosition(char passed_position_path[100]);
-}
+  int numericCheck(char* passed_wiring_path); 
+  bool isAlreadyMapped(int value); 
+  bool isFullyMapped(); 
+  int setUpMapping(char* passed_wiring_path);
+  int setUpPosition(char* passed_position_path, int num);
+  void rotate();
+  int transformForward(int message);
+  int transformBackward(int message):
+  
+}; 
+
+#endif

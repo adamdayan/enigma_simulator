@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include "plugboard.h"
+#include "rotor.h"
 
 class EnigmaMachine
 {
@@ -16,18 +17,19 @@ class EnigmaMachine
   char input_file_path[100];
   char output_file_path[100]; 
   std::vector<char*> rotor_wiring_paths;
-
-  /* raw settings */ 
-  
-
+ 
   int return_code; 
   
   /* internal objects */
-  Plugboard plugboard; 
+  Plugboard plugboard;
+  std::vector<Rotor*> rotor_vector;
+  Rotor* zero_rotor = new Rotor; 
   
   /* methods */ 
   EnigmaMachine(int argument_cnt, char** argument_array);
-  int setUp(); 
+  int multiRotorSetUp(); 
+  int setUp();
+  int transmitForwardsThroughRotors(int message); 
   
 
 };

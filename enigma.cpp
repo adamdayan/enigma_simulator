@@ -47,16 +47,78 @@ EnigmaMachine::EnigmaMachine(int argument_cnt, char** argument_array)
     }
 }
 
-int EnigmaMachine::setUp()
+int EnigmaMachine::multiRotorSetUp()
 {
-  int ret = plugboard.setUp(plugboard_wiring_path); 
-  if (ret)
-    return ret;
-  else
-    return 0; 
+  int ret = 0, iterator_cnt = 0;
+  
+  Rotor* current_rotor = nullptr, *last_rotor = nullptr;  
+
+  current_rotor = zero_rotor; 
+  
+  for (auto i = rotor_wiring_paths.begin(); i <= rotor_wiring_paths.end(); ++i)
+    {
+      ret = current_rotor->setUpMapping(*i);
+      if (ret)
+	return ret; 
+      ret = current_rotor->setUpPosition(rotor_position_path, iterator_cnt);
+      if (ret)
+	return ret; 
+
+      current_rotor->prev_rotor = last_rotor;
+
+      rotor_vector.push_back(current_rotor); 
+
+      if (last_rotor != nullptr)
+	{
+	  last_rotor->next_rotor = current_rotor;
+	}
+
+      last_rotor = current_rotor;
+      current_rotor = new Rotor;
+      iterator_cnt++;
+    }
+
+  return 0; 
 }
 
 
+int EnigmaMachine::setUp()
+{
+  int ret = 0; 
+
+  /* set up plugboard */  
+  ret = plugboard.setUp(plugboard_wiring_path); 
+  if (ret)
+    return ret;
+
+  /* set up all rotors */  
+  ret = multiRotorSetUp();
+  if (ret)
+    return ret;
+
+  return 0; 
+}
+
+int transmitForwardsThroughRotors(int message)
+{
+  bool hit_notch = false;
+  int transformed_message = message ;
+
+  for (auto i = rotor_vector.begin(); i != rotor_vector.end(); i++)
+    {
+      if (i->rotor_index == 0)
+	i->rotate();
+
+      if (hit_notch && i->rotor_index != 0)
+	i->rotate();
+
+      transformed_message = i->transmitForward(transformed_message);
+
+      hit_notch = i->isAtNotch();
+    }
+
+  return transformed_message; 
+}
   
 
 
