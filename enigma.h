@@ -22,7 +22,7 @@ class EnigmaMachine
   
   /* internal objects */
   Plugboard plugboard;
-  std::vector<Rotor*> rotor_vector;
+  std::vector<Rotor *> rotor_vector;
   Rotor* zero_rotor = new Rotor; 
   
   /* methods */ 

@@ -29,8 +29,9 @@ class Rotor
   int setUpMapping(char* passed_wiring_path);
   int setUpPosition(char* passed_position_path, int num);
   void rotate();
+  bool isAtNotch(); 
   int transformForward(int message);
-  int transformBackward(int message):
+  int transformBackward(int message);
   
 }; 
 

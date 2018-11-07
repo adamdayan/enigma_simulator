@@ -99,22 +99,22 @@ int EnigmaMachine::setUp()
   return 0; 
 }
 
-int transmitForwardsThroughRotors(int message)
+int EnigmaMachine::transmitForwardsThroughRotors(int message)
 {
   bool hit_notch = false;
   int transformed_message = message ;
 
   for (auto i = rotor_vector.begin(); i != rotor_vector.end(); i++)
     {
-      if (i->rotor_index == 0)
-	i->rotate();
+      if ((*i)->rotor_index == 0)
+	(*i)->rotate();
 
-      if (hit_notch && i->rotor_index != 0)
-	i->rotate();
+      if (hit_notch && (*i)->rotor_index != 0)
+	(*i)->rotate();
 
-      transformed_message = i->transmitForward(transformed_message);
+      transformed_message = (*i)->transformForward(transformed_message);
 
-      hit_notch = i->isAtNotch();
+      hit_notch = (*i)->isAtNotch();
     }
 
   return transformed_message; 

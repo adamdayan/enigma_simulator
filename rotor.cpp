@@ -179,7 +179,7 @@ int Rotor::setUpPosition(char* passed_position_path, int num)
 }
 
 /* function that rotates rotor; if rotor hits a notch, it will rotate the next rotor as well */ 
-void Rotor::Rotate()
+void Rotor::rotate()
 {
   if ((position + 1) < 26)
     position++;
@@ -197,7 +197,7 @@ int Rotor::transformForward(int message)
     transformed_message = wiring_map[message + position - 26];
 
   if ((transformed_message - position) > 0)
-    transformed_message = transformed_message - positiion;
+    transformed_message = transformed_message - position;
   else
     transformed_message = transformed_message - position + 26;
 
@@ -214,22 +214,21 @@ int Rotor::transformBackward(int message)
     transformed_message = reverse_wiring_map[message + position - 26];
 
   if ((transformed_message - position) > 0)
-    transformed_message = transformed_message - positiion;
+    transformed_message = transformed_message - position;
   else
     transformed_message = transformed_message - position + 26;
 
   return transformed_message;
 }
 
-bool isAtNotch()
+bool Rotor::isAtNotch()
 {
   for (auto i = notches.begin(); i != notches.end(); i++)
     {
       if (position == *i)
 	return true;
-
-      return false;
     }
+  return false; 
 }
 		 
 
