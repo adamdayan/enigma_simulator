@@ -6,6 +6,7 @@
 #include <map>
 #include "plugboard.h"
 #include "rotor.h"
+#include "reflector.h"
 
 class EnigmaMachine
 {
@@ -23,14 +24,17 @@ class EnigmaMachine
   /* internal objects */
   Plugboard plugboard;
   std::vector<Rotor *> rotor_vector;
-  Rotor* zero_rotor = new Rotor; 
+  Rotor* zero_rotor = new Rotor;
+  Reflector reflector; 
   
   /* methods */ 
   EnigmaMachine(int argument_cnt, char** argument_array);
   int multiRotorSetUp(); 
   int setUp();
-  int transmitForwardsThroughRotors(int message); 
-  
+  int transmitThroughPlugboard(int message); 
+  int transmitForwardsThroughRotors(int message);
+  int transmitBackwardsThroughRotors(int message); 
+  int encryptMessage(int message);  
 
 };
 

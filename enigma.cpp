@@ -5,6 +5,7 @@
 #include <map>
 #include "enigma.h"
 #include "plugboard.h"
+#include "reflector.h"
 
 using namespace std;
 
@@ -55,7 +56,7 @@ int EnigmaMachine::multiRotorSetUp()
 
   current_rotor = zero_rotor; 
   
-  for (auto i = rotor_wiring_paths.begin(); i <= rotor_wiring_paths.end(); ++i)
+  for (auto i = rotor_wiring_paths.begin(); i < rotor_wiring_paths.end(); ++i)
     {
       ret = current_rotor->setUpMapping(*i);
       if (ret)
@@ -96,6 +97,10 @@ int EnigmaMachine::setUp()
   if (ret)
     return ret;
 
+  ret = reflector.setUp(reflector_wiring_path);
+  if (ret)
+    return ret;
+
   return 0; 
 }
 
@@ -119,8 +124,35 @@ int EnigmaMachine::transmitForwardsThroughRotors(int message)
 
   return transformed_message; 
 }
-  
 
+int EnigmaMachine::transmitBackwardsThroughRotors(int message)
+{
+  int transformed_message = message ;
+
+  for (auto i = rotor_vector.rbegin(); i != rotor_vector.rend(); i++)
+    {
+      transformed_message = (*i)->transformBackward(transformed_message);
+    }
+
+  return transformed_message; 
+}
+  
+int EnigmaMachine::encryptMessage(int message)
+{
+  int transformed_message;
+
+  transformed_message = plugboard.encryptValue(message);
+
+  transformed_message = transmitForwardsThroughRotors(transformed_message);
+
+  transformed_message = reflector.reflectValue(transformed_message);
+
+  transformed_message = transmitBackwardsThroughRotors(transformed_message);
+
+  transformed_message = plugboard.encryptValue(transformed_message);
+
+  return transformed_message;
+}
 
 
 

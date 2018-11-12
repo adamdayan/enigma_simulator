@@ -23,7 +23,7 @@ class Rotor
   Rotor* prev_rotor = NULL; 
 
   /* methods */
-  int numericCheck(char* passed_wiring_path); 
+  int decimaliser(int num, int since_ws_cnt); 
   bool isAlreadyMapped(int value); 
   bool isFullyMapped(); 
   int setUpMapping(char* passed_wiring_path);

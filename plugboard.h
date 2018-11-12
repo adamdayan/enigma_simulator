@@ -8,8 +8,7 @@ class Plugboard
   char* wiring_path; 
   std::map<int, int> wiring_map;
 
-  /* methods */ 
-  int numericCheck(char* path); 
+  /* methods */  
   int setUp(char* passed_wiring_path);
   int encryptValue(int value); 
 };

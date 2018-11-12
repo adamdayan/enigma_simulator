@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <string>
 #include <vector>
 #include <map>
 #include <fstream>
@@ -7,46 +8,14 @@
 
 using namespace std; 
 
-int Plugboard::numericCheck(char* path)
-{
-  ifstream in_stream;
-  char ch;
-
-  in_stream.open(path);
-
-  in_stream.get(ch);
-
-  if (!in_stream.is_open())
-    {
-      cerr << "Stream from " << path << " has failed to open\n";
-      return 11;
-    }
-
-  while (!in_stream.eof())
-    {
-      if (!((ch > 47 && ch <= 57) || (ch == 32) ||(ch == 10)))
-	{
-	  cerr << "Non-numeric character " << ch <<" detected in " << path << " at position " << in_stream.tellg() << endl;
-	  return 4;
-	}
-      in_stream.get(ch); 
-    }
-
-  in_stream.close();
-
-  return 0;
-}
-
+/* TODO deal with end of stream fuckery */ 
 int Plugboard::setUp(char path[100])
 {
-  int iterator_cnt = 0, current_read, last_read, ret; 
+  string buf; 
+  int iterator_cnt = 0, current_read, last_read;  
   ifstream in_stream;
 
   wiring_path = path; 
-
-  ret = numericCheck(path);
-  if (ret)
-    return ret;
     
   in_stream.open(path);
 
@@ -56,10 +25,29 @@ int Plugboard::setUp(char path[100])
       return 11;
     }
   
-  in_stream >> current_read;
+  in_stream >> buf;
 
   while (!in_stream.eof())
     {
+      if (in_stream.fail())
+	{
+	  cerr << "Failed at position " << in_stream.tellg() << " in " << path << endl;
+	  return 11;
+	}
+      
+      /* check for non-numeric characters */ 
+      for (auto i = buf.begin(); i != buf.end(); i++)
+	{
+	  if (!(*i > 47 && *i <= 57))
+	    {
+	      cerr << "Non-numeric character " << buf << " detected in "
+		   << path << " at position " << in_stream.tellg() << endl;
+	      return 4;
+	    }
+	}
+
+      current_read = std::stoi(buf);
+	  
       /* check stream is still open */ 
       if (in_stream.fail())
 	{
@@ -89,9 +77,8 @@ int Plugboard::setUp(char path[100])
 	  wiring_map.insert(pair <int, int> (last_read, current_read));
 	  wiring_map.insert(pair <int, int> (current_read, last_read));
 	}
-      
-      in_stream >> current_read;
-      iterator_cnt++;
+      in_stream >> buf;
+      iterator_cnt++; 
     }
 
   in_stream.close(); 
