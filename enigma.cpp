@@ -179,7 +179,7 @@ int EnigmaMachine::encryptMessage()
       output_int = encryptNum(input_int);
       output_ch = output_int + 65;
 
-      cout << output_ch << endl;
+      cout << output_ch;
 
       cin >> ws >> input_ch; 
     }
