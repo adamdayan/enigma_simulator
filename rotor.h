@@ -22,16 +22,15 @@ class Rotor
   Rotor* next_rotor = NULL;
   Rotor* prev_rotor = NULL; 
 
-  /* methods */
-  int decimaliser(int num, int since_ws_cnt); 
+  /* methods */ 
   bool isAlreadyMapped(int value); 
   bool isFullyMapped(); 
   int setUpMapping(char* passed_wiring_path);
-  int setUpPosition(char* passed_position_path, int num);
+  int setUpPosition(char* passed_position_path, int config_index, int true_index);
   void rotate();
   bool isAtNotch(); 
   int transformForward(int message);
-  int transformBackward(int message);
+  int transformBackward(int message); 
   
 }; 
 

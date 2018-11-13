@@ -28,13 +28,14 @@ class EnigmaMachine
   Reflector reflector; 
   
   /* methods */ 
-  EnigmaMachine(int argument_cnt, char** argument_array);
+  int getArguments(int argument_cnt, char** argument_array);
   int multiRotorSetUp(); 
-  int setUp();
+  int setUp(int argument_cnt, char** argument_array);
   int transmitThroughPlugboard(int message); 
   int transmitForwardsThroughRotors(int message);
   int transmitBackwardsThroughRotors(int message); 
-  int encryptMessage(int message);  
+  int encryptNum(int message);
+  int encryptMessage(); 
 
 };
 

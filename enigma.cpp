@@ -4,6 +4,7 @@
 #include <fstream>
 #include <map>
 #include "enigma.h"
+#include "errors.h"
 #include "plugboard.h"
 #include "reflector.h"
 
@@ -12,9 +13,8 @@ using namespace std;
 
 
 /*---------------- ENIGMA MACHINE METHODS -----------------*/
-/* constructor for the EnigmaMachine class
-TODO: need to work out how to return error code from constructor  */ 
-EnigmaMachine::EnigmaMachine(int argument_cnt, char** argument_array)
+ 
+int EnigmaMachine::getArguments(int argument_cnt, char** argument_array)
 {
   int plugboard_check = 0, reflector_check = 0, rotor_position_check = 0; 
 
@@ -44,8 +44,10 @@ EnigmaMachine::EnigmaMachine(int argument_cnt, char** argument_array)
   if (rotor_position_check != 1 || plugboard_check != 1 || reflector_check != 1)
     {
       cerr << "You have failed to include the correct number of command line argumnents. Check you havea .pos file, a .pb file and a .rf file\n";
-      exit(1);
+      return 1;
     }
+
+  return 0; 
 }
 
 int EnigmaMachine::multiRotorSetUp()
@@ -61,7 +63,7 @@ int EnigmaMachine::multiRotorSetUp()
       ret = current_rotor->setUpMapping(*i);
       if (ret)
 	return ret; 
-      ret = current_rotor->setUpPosition(rotor_position_path, iterator_cnt);
+      ret = current_rotor->setUpPosition(rotor_position_path, iterator_cnt,  rotor_wiring_paths.size() - (iterator_cnt+1));
       if (ret)
 	return ret; 
 
@@ -83,9 +85,13 @@ int EnigmaMachine::multiRotorSetUp()
 }
 
 
-int EnigmaMachine::setUp()
+int EnigmaMachine::setUp(int argument_cnt, char** argument_array)
 {
-  int ret = 0; 
+  int ret = 0;
+
+  ret = getArguments(argument_cnt, argument_array);
+  if (ret)
+    return ret; 
 
   /* set up plugboard */  
   ret = plugboard.setUp(plugboard_wiring_path); 
@@ -109,7 +115,7 @@ int EnigmaMachine::transmitForwardsThroughRotors(int message)
   bool hit_notch = false;
   int transformed_message = message ;
 
-  for (auto i = rotor_vector.begin(); i != rotor_vector.end(); i++)
+  for (auto i = rotor_vector.rbegin(); i != rotor_vector.rend(); i++)
     {
       if ((*i)->rotor_index == 0)
 	(*i)->rotate();
@@ -129,7 +135,7 @@ int EnigmaMachine::transmitBackwardsThroughRotors(int message)
 {
   int transformed_message = message ;
 
-  for (auto i = rotor_vector.rbegin(); i != rotor_vector.rend(); i++)
+  for (auto i = rotor_vector.begin(); i != rotor_vector.end(); i++)
     {
       transformed_message = (*i)->transformBackward(transformed_message);
     }
@@ -137,7 +143,7 @@ int EnigmaMachine::transmitBackwardsThroughRotors(int message)
   return transformed_message; 
 }
   
-int EnigmaMachine::encryptMessage(int message)
+int EnigmaMachine::encryptNum(int message)
 {
   int transformed_message;
 
@@ -153,6 +159,36 @@ int EnigmaMachine::encryptMessage(int message)
 
   return transformed_message;
 }
+
+int EnigmaMachine::encryptMessage()
+{
+  char input_ch, output_ch;
+  int input_int, output_int; 
+
+  cin >> ws >> input_ch;
+
+  while (!cin.eof())
+    {
+      if (!(input_ch >= 65 && input_ch < 91))
+	{
+	  cerr << "Invalid character " << input_ch << " input into Enigma" << endl;
+	  return INVALID_INPUT_CHARACTER;
+	}
+
+      input_int = input_ch - 65;
+      output_int = encryptNum(input_int);
+      output_ch = output_int + 65;
+
+      cout << output_ch << endl;
+
+      cin >> ws >> input_ch; 
+    }
+
+  return NO_ERROR;
+}
+
+      
+      
 
 
 

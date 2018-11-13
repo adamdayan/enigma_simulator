@@ -6,11 +6,6 @@
 
 using namespace std;
 
-int Rotor::decimaliser(int num, int since_ws_cnt)
-{
-  return (num * ((1 - since_ws_cnt) * 10));
-}
-
 bool Rotor::isAlreadyMapped(int value)
 {
   for (auto it = wiring_map.begin(); it != wiring_map.end(); ++it)
@@ -110,13 +105,13 @@ int Rotor::setUpMapping(char* passed_wiring_path)
   return 0;
 }
 
-int Rotor::setUpPosition(char* passed_position_path, int index)
+int Rotor::setUpPosition(char* passed_position_path, int config_index, int true_index)
 {
   string buf; 
   int iterator_cnt = 0, current_read; 
   ifstream in_stream;
 
-  rotor_index = index;
+  rotor_index = true_index;
   position_path = passed_position_path; 
 
   in_stream.open(passed_position_path);
@@ -157,7 +152,7 @@ int Rotor::setUpPosition(char* passed_position_path, int index)
 	}
 
 
-      if (iterator_cnt == index)
+      if (iterator_cnt == config_index)
 	{
 	  position = current_read;
 	  break;
@@ -169,10 +164,10 @@ int Rotor::setUpPosition(char* passed_position_path, int index)
   
   in_stream.close();
 
-  if (iterator_cnt < index)
+  if (iterator_cnt < config_index)
     {
       cerr << "Insufficient rotor starting positions in "
-	   << passed_position_path << " for rotor index " << index ;
+	   << passed_position_path << " for rotor index " << config_index ;
       return 8;
     }
 
