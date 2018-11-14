@@ -131,10 +131,6 @@ int EnigmaMachine::transmitForwardsThroughRotors(int message)
       transformed_message = (*i)->transformForward(transformed_message);
       
       hit_notch = (*i)->isAtNotch();
-
-      //debugging 
-      cout << "Rotor " << (*i)->rotor_index << " position " << (*i)->position
-	   << "; Transformed message = " << transformed_message << endl ;
     }
 
   return transformed_message; 
@@ -147,9 +143,6 @@ int EnigmaMachine::transmitBackwardsThroughRotors(int message)
   for (auto i = rotor_vector.begin(); i != rotor_vector.end(); i++)
     {
       transformed_message = (*i)->transformBackward(transformed_message);
-
-      //debugging
-      cout << "Rotor " << (*i)->rotor_index << " transformed message = " << transformed_message << endl; 
     }
 
   return transformed_message; 
@@ -159,23 +152,15 @@ int EnigmaMachine::encryptNum(int message)
 {
   int transformed_message;
 
-  cout << "Initial message: " << message << endl; 
-
   transformed_message = plugboard.encryptValue(message);
-
-  cout << "Plugboard first transform: " << transformed_message << endl; 
 
   transformed_message = transmitForwardsThroughRotors(transformed_message);
 
   transformed_message = reflector.reflectValue(transformed_message);
 
-  cout << "Reflector transform: " << transformed_message << endl; 
-
   transformed_message = transmitBackwardsThroughRotors(transformed_message);
 
   transformed_message = plugboard.encryptValue(transformed_message);
-
-  cout << "Plugboard second transform: " << transformed_message << endl; 
 
   return transformed_message;
 }

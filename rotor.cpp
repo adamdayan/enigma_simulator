@@ -192,7 +192,7 @@ int Rotor::transformForward(int message)
   else
     transformed_message = wiring_map[message + position - 26];
 
-  if ((transformed_message - position) > 0)
+  if ((transformed_message - position) >= 0)
     transformed_message = transformed_message - position;
   else
     transformed_message = transformed_message - position + 26;
