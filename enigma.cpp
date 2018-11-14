@@ -14,9 +14,11 @@ using namespace std;
 
 /*---------------- ENIGMA MACHINE METHODS -----------------*/
  
+/* function that loops through the command line arguments and classifies them by their file extension.
+   if their are the incorrect number of arguments then it will return an error code */ 
 int EnigmaMachine::getArguments(int argument_cnt, char** argument_array)
 {
-  int plugboard_check = 0, reflector_check = 0, rotor_position_check = 0; 
+  int plugboard_check = 0, reflector_check = 0, rotor_position_check = 0, rotor_wiring_check = 0; 
 
   for (int i = 1; i < argument_cnt; i++)
     {
@@ -33,7 +35,10 @@ int EnigmaMachine::getArguments(int argument_cnt, char** argument_array)
 	  reflector_check++;
 	}
       else if (strncmp(".rot", argument_array[i]+ (argument_len-4), 4) == 0)
-	rotor_wiring_paths.push_back(argument_array[i]);
+	{
+	  rotor_wiring_paths.push_back(argument_array[i]);
+	  rotor_wiring_check = 1;
+	}
       else if (strncmp(".pos", argument_array[i] + (argument_len-4), 4) == 0)
 	{
 	  strcpy(rotor_position_path, argument_array[i]);
@@ -41,7 +46,7 @@ int EnigmaMachine::getArguments(int argument_cnt, char** argument_array)
 	}
     }
 
-  if (rotor_position_check != 1 || plugboard_check != 1 || reflector_check != 1)
+  if (plugboard_check != 1 || reflector_check != 1 || (rotor_position_check != rotor_wiring_check))
     {
       cerr << "You have failed to include the correct number of command line argumnents. Check you havea .pos file, a .pb file and a .rf file\n";
       return 1;
