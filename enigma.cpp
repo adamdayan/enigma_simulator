@@ -170,7 +170,6 @@ int EnigmaMachine::encryptMessage()
   char input_ch, output_ch;
   int input_int, output_int; 
 
-  cout << "START MESSAGE"; 
   cin >> ws >> input_ch;
 
   while (!cin.eof())
