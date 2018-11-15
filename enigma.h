@@ -27,7 +27,8 @@ class EnigmaMachine
   Rotor* zero_rotor = new Rotor;
   Reflector reflector; 
   
-  /* methods */ 
+  /* methods */
+  ~EnigmaMachine(); 
   int getArguments(int argument_cnt, char** argument_array);
   int multiRotorSetUp(); 
   int setUp(int argument_cnt, char** argument_array);

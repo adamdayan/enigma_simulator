@@ -10,10 +10,17 @@
 
 using namespace std;
 
-
-
 /*---------------- ENIGMA MACHINE METHODS -----------------*/
- 
+
+
+EnigmaMachine::~EnigmaMachine()
+{
+  for (auto i = rotor_vector.begin(); i != rotor_vector.end(); i++)
+    {
+      delete (*i);
+    }
+}
+
 /* function that loops through the command line arguments and classifies them by their file extension.
    if their are the incorrect number of arguments then it will return an error code */ 
 int EnigmaMachine::getArguments(int argument_cnt, char** argument_array)
@@ -48,7 +55,7 @@ int EnigmaMachine::getArguments(int argument_cnt, char** argument_array)
 
   if (plugboard_check != 1 || reflector_check != 1 || (rotor_position_check != rotor_wiring_check))
     {
-      cerr << "You have failed to include the correct number of command line argumnents. Check you havea .pos file, a .pb file and a .rf file\n";
+      cerr << "You have failed to include the correct number of command line argumnents. Check you have a .pb file and a .rf file. If you've included a .rot then you'll need a .pos\n";
       return 1;
     }
 

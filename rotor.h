@@ -22,7 +22,7 @@ class Rotor
   Rotor* next_rotor = NULL;
   Rotor* prev_rotor = NULL; 
 
-  /* methods */ 
+  /* methods */
   bool isAlreadyMapped(int value); 
   bool isFullyMapped(); 
   int setUpMapping(char* passed_wiring_path);

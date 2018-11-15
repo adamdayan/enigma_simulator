@@ -6,6 +6,7 @@
 
 using namespace std;
 
+
 bool Rotor::isAlreadyMapped(int value)
 {
   for (auto it = wiring_map.begin(); it != wiring_map.end(); ++it)
@@ -58,7 +59,7 @@ int Rotor::setUpMapping(char* passed_wiring_path)
 	{
 	  if (!(*i > 47 && *i <= 57))
 	    {
-	      cerr << "Non-numeric character " << buf << " detected in "
+	      cerr << "Non-numeric character '" << buf << "' detected in "
 		   << passed_wiring_path << " at position " << in_stream.tellg() << endl;
 	      return 4;
 	    }
@@ -136,7 +137,7 @@ int Rotor::setUpPosition(char* passed_position_path, int config_index, int true_
 	{
 	  if (!(*i > 47 && *i <= 57))
 	    {
-	      cerr << "Non-numeric character " << buf << " detected in "
+	      cerr << "Non-numeric character '" << buf << "' detected in "
 		   << passed_position_path << " at position " << in_stream.tellg() << endl;
 	      return 4;
 	    }
@@ -155,6 +156,7 @@ int Rotor::setUpPosition(char* passed_position_path, int config_index, int true_
       if (iterator_cnt == config_index)
 	{
 	  position = current_read;
+	  iterator_cnt++; 
 	  break;
 	}
 
