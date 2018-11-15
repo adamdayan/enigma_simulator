@@ -7,8 +7,7 @@
 #include "enigma.h"
 
 using namespace std; 
-
-/* TODO deal with end of stream fuckery */ 
+ 
 int Plugboard::setUp(char path[100])
 {
   string buf; 

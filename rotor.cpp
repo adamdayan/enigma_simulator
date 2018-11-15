@@ -164,10 +164,10 @@ int Rotor::setUpPosition(char* passed_position_path, int config_index, int true_
   
   in_stream.close();
 
-  if (iterator_cnt < config_index)
+  if (iterator_cnt <= config_index)
     {
       cerr << "Insufficient rotor starting positions in "
-	   << passed_position_path << " for rotor index " << config_index ;
+	   << passed_position_path << " for rotor index " << config_index << endl;
       return 8;
     }
 
