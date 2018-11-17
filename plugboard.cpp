@@ -14,6 +14,7 @@ int Plugboard::setUp(char path[100])
   int iterator_cnt = 0, current_read, last_read;  
   ifstream in_stream;
 
+  /* sets Plugboard wiring path data memember */ 
   wiring_path = path; 
     
   in_stream.open(path);
@@ -21,7 +22,7 @@ int Plugboard::setUp(char path[100])
   if (!in_stream.is_open())
     {
       cerr << "Stream from " << path << " has failed to open\n";
-      return 11;
+      return ERROR_OPENING_CONFIGURATION_FILE;
     }
   
   in_stream >> buf;
@@ -31,7 +32,7 @@ int Plugboard::setUp(char path[100])
       if (in_stream.fail())
 	{
 	  cerr << "Failed at position " << in_stream.tellg() << " in " << path << endl;
-	  return 11;
+	  return ERROR_OPENING_CONFIGURATION_FILE;
 	}
       
       /* check for non-numeric characters */ 
@@ -41,7 +42,7 @@ int Plugboard::setUp(char path[100])
 	    {
 	      cerr << "Non-numeric character '" << buf << "' detected in "
 		   << path << " at position " << in_stream.tellg() << endl;
-	      return 4;
+	      return NON_NUMERIC_CHARACTER;
 	    }
 	}
 
@@ -51,14 +52,14 @@ int Plugboard::setUp(char path[100])
       if (in_stream.fail())
 	{
 	  cerr << "The stream from " << path << " has failed at " << in_stream.tellg() << endl;
-	  return 11;
+	  return ERROR_OPENING_CONFIGURATION_FILE;
 	}
 
       /* check for index error */ 
       if (!(current_read >= 0 || current_read < 26))
 	{
 	  cerr << "Number at " << in_stream.tellg() << " in " << path <<" not between 0 and 25\n";
-	  return 3;
+	  return INVALID_INDEX;
 	}
 
       /* modify behaviour depending on whether current_read is first or second of the switch pair */  
@@ -86,7 +87,7 @@ int Plugboard::setUp(char path[100])
   if ((iterator_cnt) % 2 != 0)
     {
       cerr << "Odd number of parameters found in " << path << endl;
-      return 6;
+      return INCORRECT_NUMER_OF_PLUGBOARD_PARAMETERS;
     }
 
    /* fill map in for non-switched numbers */ 
@@ -97,7 +98,7 @@ int Plugboard::setUp(char path[100])
     }
 
 
-  return 0;
+  return NO_ERROR;
 }
       
   

@@ -6,16 +6,22 @@
 
 class Reflector
 {
- public:
-  
+ private: 
+  /* PATHS */ 
   char* wiring_path;
 
-  /* maps */ 
+  /* MAPS */ 
   std::map<int, int> wiring_map;
 
-  /* methods */
+ public:
+  /* METHODS */
+
+  /* method that sets up the reflector based on a configuration file path parameter. checks for 
+     various errors and returns either the corresponding error code or a no error code */ 
   int setUp(char* passed_wiring_path);
-  int reflectValue(int value); 
-}; 
+
+  /* method that takes an integer parameter and returns the corresponding reflected value */ 
+  int reflectValue(int value);
+  }; 
 
 #endif 

@@ -12,6 +12,7 @@ int Reflector::setUp(char* passed_wiring_path)
   int iterator_cnt = 0, current_read, last_read;  
   ifstream in_stream;
 
+  /* set Reflector wiring path data member */ 
   wiring_path = passed_wiring_path; 
     
   in_stream.open(passed_wiring_path);
@@ -43,6 +44,7 @@ int Reflector::setUp(char* passed_wiring_path)
 	    }
 	}
 
+      /* convert string to int */ 
       current_read = std::stoi(buf);
 	  
       /* check stream is still open */ 
@@ -65,12 +67,14 @@ int Reflector::setUp(char* passed_wiring_path)
 
       else if ((iterator_cnt % 2) != 0)
 	{
+	  /* check that number is not mapped to itself */ 
 	  if (last_read == current_read)
 	    {
 	      cerr << "Number at " << in_stream.tellg() << " in " << passed_wiring_path << " was mapped to itself\n";
 	      return INVALID_REFLECTOR_MAPPING;
 	    }
 
+	  /* check number is not mapped twice */ 
 	  if (wiring_map.find(last_read) != wiring_map.end())
 	    {
 	      cerr << "Attempted to map " << last_read << " twice\n";

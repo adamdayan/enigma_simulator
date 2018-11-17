@@ -6,7 +6,7 @@
 
 class Rotor
 {
- public:
+ private:
   /* paths */
   char* wiring_path;
   char* position_path;
@@ -19,18 +19,26 @@ class Rotor
   int position;
   int rotor_index; 
   std::vector<int> notches;
-  Rotor* next_rotor = NULL;
-  Rotor* prev_rotor = NULL; 
-
-  /* methods */
+   
+ /* rotor pointers */ 
+  Rotor* next_rotor;
+  Rotor* prev_rotor;
+  
+  /* private methods */
   bool isAlreadyMapped(int value); 
-  bool isFullyMapped(); 
+  bool isFullyMapped();
+
+ public:
+
+  /* public methods */ 
   int setUpMapping(char* passed_wiring_path);
   int setUpPosition(char* passed_position_path, int config_index, int true_index);
   void rotate();
   bool isAtNotch(); 
   int transformForward(int message);
-  int transformBackward(int message); 
+  int transformBackward(int message);
+  Rotor* getNextRotorPtr();
+  Rotor* getPrevRotorPtr(); 
   
 }; 
 

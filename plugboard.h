@@ -3,13 +3,22 @@
 
 class Plugboard
 {
- public:
+ private: 
+  /* PATHS */
+  char* wiring_path;
 
-  char* wiring_path; 
+  /* MAPS */
   std::map<int, int> wiring_map;
 
-  /* methods */  
+ public:
+  /* METHODS */
+
+  /* method that sets up the plugboard based on a configuration file path parameter, checks for
+     varous errors and returns either the corresponding error code or a no error code */ 
   int setUp(char* passed_wiring_path);
+
+  /* method that takes an integer parameter and returns value after passage through the
+     plugboard */
   int encryptValue(int value); 
 };
 

@@ -42,7 +42,7 @@ int Rotor::setUpMapping(char* passed_wiring_path)
   if (!in_stream.is_open())
     {
       cerr << "Failed to open " << passed_wiring_path << endl;
-      return 11;
+      return ERROR_OPENING_CONFIGURATION_FILE;
     }
 
   in_stream >> buf;
@@ -52,7 +52,7 @@ int Rotor::setUpMapping(char* passed_wiring_path)
       if (in_stream.fail())
 	{
 	  cerr << "Failed at position " << in_stream.tellg() << " in " << passed_wiring_path << endl;
-	  return 11;
+	  return ERROR_OPENING_CONFIGURATION_FILE;
 	}
 
       for (auto i = buf.begin(); i != buf.end(); i++)
@@ -61,7 +61,7 @@ int Rotor::setUpMapping(char* passed_wiring_path)
 	    {
 	      cerr << "Non-numeric character '" << buf << "' detected in "
 		   << passed_wiring_path << " at position " << in_stream.tellg() << endl;
-	      return 4;
+	      return NON_NUMERIC_CHARACTER;
 	    }
 	}
       
@@ -71,14 +71,14 @@ int Rotor::setUpMapping(char* passed_wiring_path)
 	{
 	  cerr << "Invalid index " << current_read << " at position "
 	       << in_stream.tellg() << " in " << passed_wiring_path << endl;
-	  return 3;
+	  return INVALID_INDEX;
 	}
 
       if (iterator_cnt < 26 && isAlreadyMapped(current_read))
 	{
 	  cerr << "Attempted to map " << current_read << " twice in "
 	       << passed_wiring_path << " at position " << in_stream.tellg() << endl;
-	  return 7;
+	  return INVALID_ROTOR_MAPPING;
 	}
 	  
       if (iterator_cnt < 26)
@@ -100,10 +100,10 @@ int Rotor::setUpMapping(char* passed_wiring_path)
   if (!isFullyMapped())
     {
       cerr << "The rotor mapping " << passed_wiring_path << " is not complete\n";
-      return 7;
+      return INVALID_ROTOR_MAPPING;
     }
   
-  return 0;
+  return NO_ERROR;
 }
 
 int Rotor::setUpPosition(char* passed_position_path, int config_index, int true_index)
@@ -119,7 +119,7 @@ int Rotor::setUpPosition(char* passed_position_path, int config_index, int true_
   if (!in_stream.is_open())
     {
       cerr << "Failed to open " << passed_position_path << endl;
-      return 11;
+      return ERROR_OPENING_CONFIGURATION_FILE;
     }
 
   in_stream >> buf;
@@ -129,7 +129,7 @@ int Rotor::setUpPosition(char* passed_position_path, int config_index, int true_
       if (in_stream.fail())
 	{
 	  cerr << "Failed at position " << in_stream.tellg() << " in " << passed_position_path << endl;
-	  return 11;
+	  return ERROR_OPENING_CONFIGURATION_FILE;
 	}
 
       
@@ -139,7 +139,7 @@ int Rotor::setUpPosition(char* passed_position_path, int config_index, int true_
 	    {
 	      cerr << "Non-numeric character '" << buf << "' detected in "
 		   << passed_position_path << " at position " << in_stream.tellg() << endl;
-	      return 4;
+	      return NON_NUMERIC_CHARACTER;
 	    }
 	}
 
@@ -149,7 +149,7 @@ int Rotor::setUpPosition(char* passed_position_path, int config_index, int true_
 	{
 	  cerr << "Invalid index " << current_read << " at position "
 	       << in_stream.tellg() << " in " << passed_position_path << endl;
-	  return 3;
+	  return ;
 	}
 
 
@@ -228,6 +228,17 @@ bool Rotor::isAtNotch()
     }
   return false; 
 }
+
+Rotor* Rotor::getNextRotorPtr()
+{
+  return next_rotor;
+}
+
+Rotor* Rotor::getPrevRotorPtr()
+{
+  return prev_rotor;
+}
+
 		 
 
       
