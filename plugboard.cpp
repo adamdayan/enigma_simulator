@@ -14,7 +14,7 @@ int Plugboard::setUp(char path[100])
   int iterator_cnt = 0, current_read, last_read;  
   ifstream in_stream;
 
-  /* sets Plugboard wiring path data memember */ 
+  /* sets Plugboard wiring path data member */ 
   wiring_path = path; 
     
   in_stream.open(path);
