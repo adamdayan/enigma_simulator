@@ -148,7 +148,7 @@ int Rotor::setUpPosition(char* passed_position_path, int config_index, int true_
       /* checks for non-numeric characters */ 
       for (auto i = buf.begin(); i != buf.end(); i++)
 	{
-	  if (!(*i > 47 && *i <= 57))
+	  if (!(*i >= static_cast<int> ('0') && *i <= static_cast<int> ('9')))
 	    {
 	      cerr << "Non-numeric character '" << buf << "' detected in "
 		   << passed_position_path << " at position " << in_stream.tellg() << endl;

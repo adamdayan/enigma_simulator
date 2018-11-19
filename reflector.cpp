@@ -36,7 +36,7 @@ int Reflector::setUp(char* passed_wiring_path)
       /* check for non-numeric characters */ 
       for (auto i = buf.begin(); i != buf.end(); i++)
 	{
-	  if (!(*i > 47 && *i <= 57))
+	  if (!(*i >= static_cast<int> ('0') && *i <= static_cast<int> ('9')))
 	    {
 	      cerr << "Non-numeric character '" << buf << "' detected in "
 		   << passed_wiring_path << " at position " << in_stream.tellg() << endl;

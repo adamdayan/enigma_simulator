@@ -39,7 +39,7 @@ int Plugboard::setUp(char path[100])
       /* check for non-numeric characters */ 
       for (auto i = buf.begin(); i != buf.end(); i++)
 	{
-	  if (!(*i > 47 && *i <= 57))
+	  if (!(*i >= static_cast<int> ('0') && *i <= static_cast<int> ('9')))
 	    {
 	      cerr << "Non-numeric character '" << buf << "' detected in "
 		   << path << " at position " << in_stream.tellg() << endl;
