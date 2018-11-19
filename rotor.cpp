@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include"rotor.h"
+#include "errors.h"
 
 using namespace std;
 
@@ -163,7 +164,7 @@ int Rotor::setUpPosition(char* passed_position_path, int config_index, int true_
 	{
 	  cerr << "Invalid index " << current_read << " at position "
 	       << in_stream.tellg() << " in " << passed_position_path << endl;
-	  return ;
+	  return INVALID_INDEX;
 	}
 
       /* finds the relevant starting position in the configuration file for the rotor in 
@@ -258,6 +259,21 @@ Rotor* Rotor::getPrevRotorPtr()
   return prev_rotor;
 }
 
+void Rotor::setNextRotorPtr(Rotor* rotor_ptr)
+{
+  next_rotor = rotor_ptr;
+}
+
+void Rotor::setPrevRotorPtr(Rotor* rotor_ptr)
+{
+  prev_rotor = rotor_ptr;
+}
+
+int Rotor::getRotorIndex()
+{
+  return rotor_index;
+}
+  
 		 
 
       

@@ -45,7 +45,7 @@ class EnigmaMachine
   int encryptNum(int message);
 
   /* destructor for EnigmaMachine. Needs to delete rotors created on the heap */ 
-  ~EnigmaMachine(); 
+  
 
   /* method that loops through the command line arguments and classifies them by their file 
      extension.if their are the incorrect number of arguments then it will return an error code */
@@ -66,6 +66,7 @@ class EnigmaMachine
      output stream. returns error code for invalid inputs or 0 for no error */  
   int encryptMessage(); 
 
+   ~EnigmaMachine();
 };
 
 #endif

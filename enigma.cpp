@@ -80,13 +80,13 @@ int EnigmaMachine::multiRotorSetUp()
       if (ret)
 	return ret; 
 
-      current_rotor->getPrevRotorPtr() = last_rotor;
+      current_rotor->setPrevRotorPtr(last_rotor);
 
       rotor_vector.push_back(current_rotor); 
 
       if (last_rotor != nullptr)
 	{
-	  last_rotor->getNextRotorPtr() = current_rotor;
+	  last_rotor->setNextRotorPtr(current_rotor);
 	}
 
       last_rotor = current_rotor;
@@ -136,11 +136,11 @@ int EnigmaMachine::transmitForwardsThroughRotors(int message)
   for (auto i = rotor_vector.rbegin(); i != rotor_vector.rend(); i++)
     {
       /* first rotor should always rotate */ 
-      if ((*i)->rotor_index == 0)
+      if ((*i)->getRotorIndex() == 0)
 	(*i)->rotate();
 
       /* non-first rotors should only rotate if previous rotor has hit a notch */ 
-      if (hit_notch && (*i)->rotor_index != 0)
+      if (hit_notch && (*i)->getRotorIndex() != 0)
 	(*i)->rotate();
 
       transformed_message = (*i)->transformForward(transformed_message);

@@ -5,6 +5,7 @@
 #include <map>
 #include <fstream>
 #include "enigma.h"
+#include "errors.h"
 
 using namespace std; 
  
@@ -87,7 +88,7 @@ int Plugboard::setUp(char path[100])
   if ((iterator_cnt) % 2 != 0)
     {
       cerr << "Odd number of parameters found in " << path << endl;
-      return INCORRECT_NUMER_OF_PLUGBOARD_PARAMETERS;
+      return INCORRECT_NUMBER_OF_PLUGBOARD_PARAMETERS;
     }
 
    /* fill map in for non-switched numbers */ 

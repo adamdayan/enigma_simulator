@@ -17,7 +17,7 @@ class Rotor
 
   /* POSIITION */
   int position;
-  int rotor_index; 
+  int rotor_index;
   std::vector<int> notches;
    
  /* ROTOR POINTERS */ 
@@ -52,10 +52,29 @@ class Rotor
 
   /* method that returns true if a rotor position is equal to one of its notch values. */  
   bool isAtNotch(); 
+
+  /* method that transmits int value forwards through a Rotor. returns transformed value */ 
   int transformForward(int message);
+
+  /* method that transmits int value backwards through a Rotor. returns transformed value */ 
   int transformBackward(int message);
+
+  /* getter for next Rotor ptr */ 
   Rotor* getNextRotorPtr();
-  Rotor* getPrevRotorPtr(); 
+
+  /* getter for prev Rotor ptr */ 
+  Rotor* getPrevRotorPtr();
+
+  /* setter for next Rotor ptr */ 
+  void setNextRotorPtr(Rotor*);
+
+  /* setter for prev Rotor ptr */ 
+  void setPrevRotorPtr(Rotor*);
+
+  /* getter for rotor index */ 
+  int getRotorIndex(); 
+  
+  
   
 }; 
 
