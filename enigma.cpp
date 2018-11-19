@@ -90,7 +90,8 @@ int EnigmaMachine::multiRotorSetUp()
 	}
 
       last_rotor = current_rotor;
-      current_rotor = new Rotor;
+      if ((static_cast<size_t> (iterator_cnt + 1) < rotor_wiring_paths.size()))
+	current_rotor = new Rotor;
       iterator_cnt++;
     }
 
@@ -219,6 +220,7 @@ int EnigmaMachine::encryptMessage()
 
   return NO_ERROR;
 }
+  
 
       
       
